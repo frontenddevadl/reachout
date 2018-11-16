@@ -1,13 +1,13 @@
-#breathe
-# reachout
-Breathe application
+# breathe
+breathe application
 
+### description
 react-native application developed with the expo toolchain (expo.io)
 
-Setting up your development environment
-install LTS version of node from nodejs.org
-npm intall expo-cli --global
+#### setup
+- install LTS version of node from nodejs.org
+- npm install expo-cli --global
 
-
-cd breathe
-expo start
+#### running the app locally
+- cd breathe
+- expo start
