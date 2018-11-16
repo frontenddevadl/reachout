@@ -1,2 +1,2 @@
 # reachout
-Breathe application for au.reachout.com
+Application(s) developed on behalf of au.reachout.com by the Front End Developer Adelaide meetup group
