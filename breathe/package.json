@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
+    "expo-cli": "^2.6.0",
     "jest-expo": "^31.0.0"
   }
 }

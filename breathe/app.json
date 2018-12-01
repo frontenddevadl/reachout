@@ -21,7 +21,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.reachout.breathe"
+    },
+    "android": {
+      "package": "com.reachout.breathe"
     }
   }
 }
