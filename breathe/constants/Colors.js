@@ -11,4 +11,6 @@ export default {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
+  backgroundColor: '#42b0f4',
+  breatheButtonColor: '#f4b241'
 };
