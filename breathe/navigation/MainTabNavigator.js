@@ -4,7 +4,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import HelpScreen from '../screens/HelpScreen';
+import CreditsScreen from '../screens/CreditsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const HomeStack = createStackNavigator({
@@ -25,20 +26,6 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
-  ),
-};
-
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -53,8 +40,37 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const HelpStack = createStackNavigator({
+  Help: HelpScreen,
+});
+
+HelpStack.navigationOptions = {
+  tabBarLabel: 'Help',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-help' : 'md-help'}
+    />
+  ),
+};
+
+const CreditsStack = createStackNavigator({
+  Credits: CreditsScreen,
+});
+
+CreditsStack.navigationOptions = {
+  tabBarLabel: 'Credits',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
+    />
+  ),
+};
+
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
   SettingsStack,
+  HelpStack,
+  CreditsStack,
 });
