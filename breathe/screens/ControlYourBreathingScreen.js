@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  BackHandler
 } from 'react-native';
 
 import { Icon } from 'expo';
@@ -19,18 +20,32 @@ export default class ControlYourBreathingScreen extends React.Component {
     header: null,
   };
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    console.log('back')
+    this.props.navigation.goBack();
+    return true;
+  }
 
   render() {
     return (
-    <View style={styles.container}>
-    <Text style={styles.header}>
-      Get Started!
-    </Text>
-    <Text style={styles.desc}>
-      place your thumb on the yellow button to get started.
-    </Text>
-    <BreatheButton/>
-    </View>)
+      <View style={styles.container}>
+        <Text style={styles.header}>
+          Get Started!
+        </Text>
+        <Text style={styles.desc}>
+          Place your thumb on the yellow button to get started.
+        </Text>
+        <BreatheButton style={styles.button}/>
+      </View>
+      )
   }
 }
 
@@ -51,4 +66,11 @@ const styles = {
     color: '#fff',
     textAlign: 'center'
   },
+  button: {
+    position: 'absolute',
+    bottom: 25,
+    width: '100%',
+    alignItems: 'center',
+    
+  }
 }

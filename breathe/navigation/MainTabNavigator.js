@@ -6,9 +6,11 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ControlYourBreathingScreen from '../screens/ControlYourBreathingScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  ControlYourBreathing: ControlYourBreathingScreen
 });
 
 HomeStack.navigationOptions = {
