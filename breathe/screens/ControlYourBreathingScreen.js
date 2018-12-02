@@ -13,12 +13,22 @@ import {
 import { Icon } from 'expo';
 import Colors from '../constants/Colors';
 import BreatheButton from '../components/BreatheButton';
+import BreathingAnimation from '../components/BreathingAnimation';
 
 
 export default class ControlYourBreathingScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isBreathing: false,
+      headerText: 'Get Started!',
+      descText: 'Place your thumb on the yellow button to get started.'
+    };
+  }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -38,12 +48,19 @@ export default class ControlYourBreathingScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>
-          Get Started!
+          {this.state.headerText}
         </Text>
         <Text style={styles.desc}>
-          Place your thumb on the yellow button to get started.
+          {this.state.descText}
         </Text>
-        <BreatheButton style={styles.button}/>
+        { 
+          this.state.isBreathing &&
+          <BreathingAnimation style={styles.button} updateHeaderText={(text) => this.setState({headerText: text})}/>
+        }
+        { 
+          !this.state.isBreathing &&
+          <BreatheButton onPress={() => this.setState({isBreathing: true, descText: ''})} style={styles.button}/>
+        }
       </View>
       )
   }
