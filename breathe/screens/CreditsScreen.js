@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 
+import Colors from '../constants/Colors';
+
 export default class CreditsScreen extends React.Component {
     static navigationOptions = {
         title: 'Credits',
@@ -53,6 +55,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 0,
         padding: 10,
-        color: '#0073cfff',
+        color: Colors.fontColor,
     }
 });
