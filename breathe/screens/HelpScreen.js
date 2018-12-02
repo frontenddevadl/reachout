@@ -29,7 +29,21 @@ class AboutBreathing extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>"About Breathing"</Text>
+        <Text>
+          About controlled breathing
+        </Text>
+        <Text>
+          {"\n"}{"\n"}
+        </Text>
+        <Text>
+          Your breathing changes when you{"\'"}re feeling stressed or anxious.
+          You may take short, quick shallow breaths which can make you
+          feel worse.
+          {"\n"}{"\n"}
+          When you actively try to slow down your breathing you can slow down
+          your heart rate, to help you feel better and recover from the
+          symptoms of stress and anxiety more quickly.
+        </Text>
       </View>
     );
   }
@@ -40,7 +54,27 @@ class WhenReachout extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>"When Reachout"</Text>
+        <Text>
+          When to use ReachOut Breathe
+        </Text>
+        <Text>
+          {"\n"}{"\n"}
+        </Text>
+        <Text>
+          Controlled breathing can help you deal with stress or anxiety, but
+          it does take practice. We suggest using the app at least twice a
+          day to start. Then, when you{"\'"}ve got it down, use it whenever
+          you need to calm your breathing. You can use ReachOut Breathe at
+          any time, wherever you are. For example:
+          {"\n"}{"\n"}
+          - Before stressful time like exams, presentations or sporting events
+          {"\n"}{"\n"}
+          - Before bedtime, to help you fall asleep 
+          {"\n"}{"\n"}
+          - Before or after situations that make you feel anxious
+          {"\n"}{"\n"}
+          - Whenever you feel like relaxing.
+        </Text>
       </View>
     );
   }
@@ -74,11 +108,12 @@ const list = [
     text: 'How to use the breathing tool',
     screen: HowBreathing,
   },
-  {
+/*  {
     name: 'how-heartrate',
     text: 'How to use the heart rate tool',
     screen: HowHeartrate,
   },
+  */
   {
     name: 'about-breathing',
     text: 'About controlled breathing',
