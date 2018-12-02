@@ -20,7 +20,7 @@ export default class CreditsScreen extends React.Component {
                     source={require('../assets/images/reachout_logo.png')}
                 />
                 <Text style={styles.text}>
-                    Breather is produced by ReachOut.com with expert advice
+                    Breathe is produced by ReachOut.com with expert advice
                     from the Centre for Clinical Interventions. 
                     {"\n"}{"\n"}
                     ReachOut provides practical tools and support to help
