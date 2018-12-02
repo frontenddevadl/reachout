@@ -7,9 +7,11 @@ import HomeScreen from '../screens/HomeScreen';
 import HelpScreen from '../screens/HelpScreen';
 import CreditsScreen from '../screens/CreditsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ControlYourBreathingScreen from '../screens/ControlYourBreathingScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  ControlYourBreathing: ControlYourBreathingScreen
 });
 
 HomeStack.navigationOptions = {
