@@ -5,6 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import HelpScreen from '../screens/HelpScreen';
+import HelpTopicScreen from '../screens/HelpTopicScreen';
 import CreditsScreen from '../screens/CreditsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ControlYourBreathingScreen from '../screens/ControlYourBreathingScreen';
@@ -44,6 +45,7 @@ SettingsStack.navigationOptions = {
 
 const HelpStack = createStackNavigator({
   Help: HelpScreen,
+  HelpTopic: HelpTopicScreen,
 });
 
 HelpStack.navigationOptions = {
