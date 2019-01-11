@@ -4,24 +4,25 @@ import { View, Text } from 'react-native';
 import { Slider, Button } from 'react-native-elements';
 
 @observer
-export default class SettingsScreen extends React.Component {
+export default class BreathingIntervalsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Settings',
+    title: 'Breathing Intervals',
   };
 
+  _navListener;
   settingsStore;
 
   constructor(props) {
     super(props);
-    this.settingsStore = this.props.screenProps.settingsStore;
+    this.settingsStore = props.screenProps.settingsStore;
   }
 
   componentDidMount() {
-    this.props.navigation.addListener('willBlur', () => this.settingsStore.saveSettings());
+    this._navListener = this.props.navigation.addListener('willBlur', () => this.settingsStore.saveSettings());
   }
 
   componentWillUnmount() {
-    this.props.navigation.removeListener('willBlur');
+    this._navListener.remove();
   }
   
   setDefaultValues() {
@@ -33,7 +34,7 @@ export default class SettingsScreen extends React.Component {
     return (
       <View style={{flex: 1, paddingLeft:10, paddingRight: 10, alignItems: 'stretch', justifyContent: 'center'}}>
 
-        <Text>Total Duration {this.settingsStore.totalDuration}min</Text>
+        <Text>Total Duration {this.settingsStore.totalDuration} min</Text>
         <Slider
           value={this.settingsStore.totalDuration}
           onValueChange={(value) => this.settingsStore.setTotalDuration(value)}
