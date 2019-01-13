@@ -7,7 +7,8 @@ import HomeScreen from '../screens/HomeScreen';
 import HelpScreen from '../screens/HelpScreen';
 import HelpTopicScreen from '../screens/HelpTopicScreen';
 import CreditsScreen from '../screens/CreditsScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import SettingsScreen  from '../screens/settings/SettingsScreen';
+import SettingsMenuScreen from '../screens/settings/SettingsMenuScreen';
 import ControlYourBreathingScreen from '../screens/ControlYourBreathingScreen';
 
 const HomeStack = createStackNavigator({
@@ -30,7 +31,8 @@ HomeStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  SettingsMenu: SettingsMenuScreen,
+  SettingsScreen: SettingsScreen
 });
 
 SettingsStack.navigationOptions = {
