@@ -1,19 +1,17 @@
 import React from "react";
-
-import {
-  Button,
-  FlatList,
-  Platform,
-  Text,
-  View
-} from "react-native";
-import { Permissions, Calendar } from "expo";
+import { Alert, Button, FlatList, Text,  TimePickerAndroid, View } from "react-native";
+import { Localization } from "expo";
 import moment from "moment";
 
+import calendarService from '../../services/calendarService';
+
 export default class ReminderSettingsScreen extends React.Component {
-  calendarOwner = "ReachOut";
-  calendarName = "Breathe";
-  calendarId = undefined;
+  calendarService;
+  breatheCalendar = undefined;
+
+  state = {
+    events: []
+  };
 
   static navigationOptions = {
     title: "Breathing Intervals"
@@ -21,130 +19,92 @@ export default class ReminderSettingsScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      events: []
-    };
+    this.calendarService = new calendarService("Breathe", "Reachout");
+  }
+  
+  from() {
+    return moment().startOf('day').toDate();
+  }
+
+  to() {
+    return moment().add(1, "y").endOf("day").toDate();
   }
 
   async componentDidMount() {
-    const hasAccess = await this.askPermissions();
+    await this.calendarService.initialize();
 
-    if (hasAccess) {
-      let calendar = await this.getCalendar();
-      this.calendarId = calendar
-        ? calendar.id
-        : await this.createCalendarAsync();
-
-      this.setState({
-        events: await this.getEvents()
-      });
-    }
+    this.setState({
+      events: await this.calendarService.getEvents(
+        this.from(),
+        this.to()
+      )
+    });
   }
 
-  async getEvents() {
-    let now = moment().startOf('day');
-    let tomorrow = moment().add(1, 'd').endOf('day')
+  addEvent = async (hours, minutes) => {
+    const startDate = moment();
+    startDate.hours(hours);
+    startDate.minutes(minutes);
+    startDate.seconds(0);
 
-    return await Calendar.getEventsAsync([this.calendarId], now.toDate(), tomorrow.toDate());
-  }
+    const endDate = new moment(startDate).add(20, 'minutes');
 
-  async askPermissions() {
-    const calendarPermission = await this.askForCalendarPermissions();
-    const reminderPermissions = await this.askForReminderPermissions();
-
-    return calendarPermission && reminderPermissions;
-  }
-
-  async askForCalendarPermissions() {
-    const response = await Permissions.askAsync(Permissions.CALENDAR);
-    return response.status === "granted";
-  }
-
-  async askForReminderPermissions() {
-    if (Platform.OS === "android") {
-      return true;
-    }
-
-    const response = await Permissions.askAsync(Permissions.REMINDERS);
-    return response.status === "granted";
-  }
-
-  async getCalendar() {
-    const calendars = await Calendar.getCalendarsAsync();
-
-    return calendars && calendars.length
-      ? calendars.filter(c => c.name === this.calendarName && c.source.name === this.calendarOwner)[0]
-      : undefined;
-  }
-
-  async createCalendarAsync(calendars) {
-    const newCalendar = {
-      title: this.calendarName,
-      entityType: Calendar.EntityTypes.EVENT,
-      color: "#2196F3",
-      sourceId:
-        Platform.OS === "ios"
-          ? calendars.find(cal => cal.source && cal.source.name === "Default")
-              .source.id
-          : undefined,
-      source:
-        Platform.OS === "android"
-          ? {
-              name: this.calendarOwner,
-              isLocalAccount: true
-            }
-          : undefined,
-      name: this.calendarName,
-      accessLevel: Calendar.CalendarAccessLevel.OWNER,
-      ownerAccount: this.calendarOwner
-    };
-
-    let calendarId = null;
-
-    try {
-      calendarId = await Calendar.createCalendarAsync(newCalendar);
-    } catch (e) {
-      console.log("Calendar could not be created", e.message);
-    }
-
-    return calendarId;
-  }
-
-  async newEvent() {
-    await this.addEvent(this.calendarId);
-    this.setState({ events: await this.getEvents() });
-  }
-
-  async addEvent(calendarId) {
-    const event = {
+    await this.calendarService.addEvent({
       title: "Breathe",
       location: "",
-      startDate: moment().toDate(),
-      endDate: moment()
-        .add(1, "hours")
-        .toDate(),
-      timeZone: "Australia"
-    };
+      startDate: startDate.toDate(),
+      endDate: endDate.toDate(),
+      timeZone: Localization.timezone || undefined,
+    });
+  
+    this.setState({
+      events: await this.calendarService.getEvents(this.from(), this.to())
+    });
+  }
 
+  timeDialog = async () => {
     try {
-      return await Calendar.createEventAsync(calendarId, event);
-    } catch (e) {
-      console.log(e);
+      const now = moment();
+      const { action, hour, minute } = await TimePickerAndroid.open({
+        hour: now.hours,
+        minute: now.minutes,
+        is24Hour: false,
+        mode: 'spinner'
+      });
+      
+      if (action !== TimePickerAndroid.dismissedAction) {
+        this.addEvent(hour, minute)
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open time picker', message);
     }
   }
 
-  getRenderItemKey = (item, index) => item.id;
-  formatDate = (date) => moment(date).format('DD/MMM/YYYY HH:mm');
+  confirmDelete(item) {
+    console.log(item.id);
+    Alert.alert(
+      'Delete Reminder',
+      `${this.formatDate(item.startDate)}`,
+      [
+        {text: 'Cancel', onPress: () => {}},
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+  
+  getRenderItemKey = (item) => item.instanceId;
+  formatDate = date => moment(date).format("DD/MMM/YYYY hh:mm A");
 
   render() {
-    return (
-      <View>
-        <Button onPress={() => this.newEvent()} title="New Event" />
-        <FlatList
-          data={this.state.events}
-          keyExtractor={this.getRenderItemKey}
-          renderItem={({ item, separators }) => <Text>{this.formatDate(item.startDate)}</Text>}
-        />
+    return ( <View >
+      <Button onPress = {this.timeDialog} title = "New Reminder"/>
+      <FlatList data = {this.state.events}
+                keyExtractor = {this.getRenderItemKey}
+                renderItem = {
+                  ({ item }) => ( <Text onPress={() => this.confirmDelete(item)}> {this.formatDate(item.startDate)} </Text>)
+              }    
+      />
       </View>
     );
   }
