@@ -52,6 +52,7 @@ export default class ReminderSettingsScreen extends React.Component {
     await this.calendarService.addEvent({
       title: "Breathe",
       location: "",
+      alarms: [this.calendarService.getAlarm(0)],
       startDate: startDate.toDate(),
       endDate: endDate.toDate(),
       timeZone: Localization.timezone || undefined,

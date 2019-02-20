@@ -31,6 +31,13 @@ export default class calendarService {
         );
     }
 
+    getAlarm(relativeOffset) {
+        return {
+            relativeOffset: relativeOffset,
+            method: Calendar.AlarmMethod.ALERT
+        };
+    }
+
     async addEvent(event) {
 
         try {
