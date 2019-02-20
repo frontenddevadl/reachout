@@ -1,5 +1,10 @@
-import { Platform } from 'react-native';
-import { Permissions, Calendar} from "expo";
+import {
+    Platform
+} from 'react-native';
+import {
+    Permissions,
+    Calendar
+} from "expo";
 
 export default class calendarService {
 
@@ -32,6 +37,16 @@ export default class calendarService {
             await Calendar.createEventAsync(this.calendar.id.toString(), event);
         } catch (e) {
             console.log(`error caught ${e}`);
+        }
+    }
+
+    async deleteEvent(eventId) {
+        try {
+            await Calendar.deleteEventAsync(eventId);
+            return true;
+        } catch (e) {
+            console.log(`error removing event with id ${eventId}`);
+            return false;
         }
     }
 

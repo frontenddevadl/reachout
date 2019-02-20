@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Button, FlatList, Text,  TimePickerAndroid, View } from "react-native";
+import { Alert, Button, FlatList, Platform, Text, TimePickerAndroid, ToastAndroid, View } from "react-native";
 import { Localization } from "expo";
 import moment from "moment";
 
@@ -62,6 +62,21 @@ export default class ReminderSettingsScreen extends React.Component {
     });
   }
 
+  deleteEvent = async (eventId)  => {
+    const isDeleted = await this.calendarService.deleteEvent(eventId);
+    if (!isDeleted) {
+      Alert.alert('Error', 'An error occurred when removing the event', { text: 'Ok'})
+    } else {
+      this.setState({
+        events: this.state.events.filter(x => x.id !== eventId)
+      });
+      
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Event deleted', ToastAndroid.SHORT);
+      }
+    }
+  }
+
   timeDialog = async () => {
     try {
       const now = moment();
@@ -81,13 +96,13 @@ export default class ReminderSettingsScreen extends React.Component {
   }
 
   confirmDelete(item) {
-    console.log(item.id);
+
     Alert.alert(
       'Delete Reminder',
       `${this.formatDate(item.startDate)}`,
       [
         {text: 'Cancel', onPress: () => {}},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => this.deleteEvent(item.id)},
       ],
       { cancelable: false }
     )
